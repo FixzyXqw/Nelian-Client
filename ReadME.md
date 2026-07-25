@@ -1,6 +1,6 @@
 # Nelian Client
 
-**Nelian Client** is a lightweight, performance-focused Minecraft client built around a simple principle: stay out of the player's way.
+**Nelian Client** is a lightweight, performance focused Minecraft Client and Launcher.
 
 ## Why Nelian?
 
