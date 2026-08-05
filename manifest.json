@@ -1,5 +1,5 @@
 {
-  "version": "7.6.2",
+  "version": "7.7",
   "files": [
     {
       "path": "Accessibility.dll",
@@ -20,6 +20,10 @@
     {
       "path": "CmlLib.Core.Installer.Forge.dll",
       "sha1": "d58bb5c4bb3ac77b0281c8a5299511689a61f935"
+    },
+    {
+      "path": "CmlLib.Core.Installer.NeoForge.dll",
+      "sha1": "19d6bb79551f540669be9757f00f48b999b827f6"
     },
     {
       "path": "DirectWriteForwarder.dll",
@@ -47,11 +51,11 @@
     },
     {
       "path": "Nelian.deps.json",
-      "sha1": "9c23ea57e103e4c081d232d77977a84e1878aeb9"
+      "sha1": "084453e018f2298721e9e0e9779a4afda6386c65"
     },
     {
       "path": "Nelian.dll",
-      "sha1": "10a9ca03982e82e95dedd52b7191248f4f9eb8b2"
+      "sha1": "0664e129f1e5c2556cdffb772b874dcd3d218238"
     },
     {
       "path": "Nelian.dll.config",
@@ -63,7 +67,7 @@
     },
     {
       "path": "Nelian.pdb",
-      "sha1": "7526fbedd0c7b381b15ef78f91fee3e5014ca904"
+      "sha1": "f4426199bb71923bf7118de49fc2b5e7d4120dba"
     },
     {
       "path": "Nelian.runtimeconfig.json",
