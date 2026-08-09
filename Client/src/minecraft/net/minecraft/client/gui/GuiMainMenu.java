@@ -45,15 +45,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     private String openGLWarning1;
     private String openGLWarning2;
     private String openGLWarningLink;
-    private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
-    private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[]{
-            new ResourceLocation("textures/gui/title/background/panorama_0.png"),
-            new ResourceLocation("textures/gui/title/background/panorama_1.png"),
-            new ResourceLocation("textures/gui/title/background/panorama_2.png"),
-            new ResourceLocation("textures/gui/title/background/panorama_3.png"),
-            new ResourceLocation("textures/gui/title/background/panorama_4.png"),
-            new ResourceLocation("textures/gui/title/background/panorama_5.png")
-    };
     public static final String field_96138_a = "Please click " + EnumChatFormatting.UNDERLINE + "here" + EnumChatFormatting.RESET + " for more information.";
 
     private int field_92022_t;
@@ -81,7 +72,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
     private AccountPanel accountPanel;
 
+
+ 
     private static class GuiButtonModern extends NelianInterface.ModernButton {
+
         public GuiButtonModern(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
             super(buttonId, x, y, widthIn, heightIn, buttonText);
         }
@@ -89,14 +83,29 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         @Override
         public void drawButton(Minecraft mc, int mouseX, int mouseY) {
             if (!this.visible) return;
-            
+
             boolean isHovered = mouseX >= this.xPosition && mouseY >= this.yPosition &&
                     mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+
             this.setHovered(isHovered);
-            
+
             super.drawButton(mc, mouseX, mouseY);
+
+            if (!this.enabled) {
+                drawRect(
+                        this.xPosition,
+                        this.yPosition,
+                        this.xPosition + this.width,
+                        this.yPosition + this.height,
+                        0x66000000
+                );
+            }
         }
     }
+
+
+
+
 
 
     public GuiMainMenu() {
@@ -151,11 +160,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
     }
 
+
     @Override
     public void initGui() {
         if (accountPanel == null) {
             accountPanel = new AccountPanel(8, 8);
         }
+
         this.viewportTexture = new DynamicTexture(256, 256);
         this.backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background", this.viewportTexture);
 
@@ -165,24 +176,24 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
         this.buttonList.clear();
 
-        int buttonWidth = 240;
-        int buttonHeight = 28;
-        int spacing = 7;
-        int startX = (this.width - buttonWidth) / 2;
-        int totalHeight = (buttonHeight * 4) + (spacing * 3);
-        int startY = (this.height - totalHeight) / 2 + 35;
+        int bWidth = 140;
+        int bHeight = 26;
+        int spacing = 8;
+        int startX = this.width / 2 - bWidth - (spacing / 2);
+        int startY = this.height / 2 - 20;
 
-        this.buttonList.add(new GuiButtonModern(1, startX, startY, buttonWidth, buttonHeight, I18n.format("menu.singleplayer", new Object[0])));
-        this.buttonList.add(new GuiButtonModern(2, startX, startY + (buttonHeight + spacing), buttonWidth, buttonHeight, I18n.format("menu.multiplayer", new Object[0])));
-        this.buttonList.add(new GuiButtonModern(
-        	    0,
-        	    startX,
-        	    startY + (buttonHeight + spacing) * 2,
-        	    buttonWidth,
-        	    buttonHeight,
-        	    I18n.format("menu.options", new Object[0]).replace(".", "")
-        	));
-        this.buttonList.add(new GuiButtonModern(4, startX, startY + (buttonHeight + spacing) * 3, buttonWidth, buttonHeight, I18n.format("menu.quit", new Object[0])));
+        this.buttonList.add(new GuiButtonModern(1, startX, startY, bWidth, bHeight, I18n.format("menu.singleplayer")));
+        this.buttonList.add(new GuiButtonModern(3, startX, startY + (bHeight + spacing), bWidth, bHeight, "Alt Manager"));
+        GuiButtonModern cosmeticsButton = new GuiButtonModern(5, startX, startY + (bHeight + spacing) * 2, bWidth, bHeight,"Cosmetics");
+        cosmeticsButton.enabled = false;
+        this.buttonList.add(cosmeticsButton);
+
+        int rightX = this.width / 2 + (spacing / 2);
+        this.buttonList.add(new GuiButtonModern(2, rightX, startY, bWidth, bHeight, I18n.format("menu.multiplayer")));
+        this.buttonList.add(new GuiButtonModern(4, rightX, startY + (bHeight + spacing), bWidth, bHeight, "Mods"));
+        this.buttonList.add(new GuiButtonModern(6, rightX, startY + (bHeight + spacing) * 2, bWidth, bHeight, I18n.format("menu.options")));
+
+        this.buttonList.add(new GuiButtonModern(7, startX, startY + (bHeight + spacing) * 3, (bWidth * 2) + spacing, bHeight, I18n.format("menu.quit")));
 
         nelianTextureX = (this.width - nelianTextureWidth) / 2;
         nelianTextureY = 45;
@@ -190,19 +201,28 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         this.mc.setConnectedToRealms(false);
     }
 
+
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
-            case 0:
-                this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
-                break;
             case 1:
                 this.mc.displayGuiScreen(new GuiSelectWorld(this));
                 break;
             case 2:
                 this.mc.displayGuiScreen(new GuiMultiplayer(this));
                 break;
+            case 3:
+            	mc.displayGuiScreen(new GuiOfflineManager(this));
+                break;
             case 4:
+                this.mc.displayGuiScreen(new GuiNelianOverlay());
+                break;
+            case 5:
+                break;
+            case 6:
+                this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+                break;
+            case 7:
                 this.mc.shutdown();
                 break;
         }
@@ -225,17 +245,17 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         }
     }
 
+
     private void renderSkybox(int mouseX, int mouseY, float partialTicks) {
         drawGradientRect(0, 0, this.width, this.height, 0xFF0B0C10, 0xFF14161D);
         drawGradientRect(0, 0, this.width, this.height, 0x1A000000, 0x66000000);
     }
 
+
     public void createNelianTexture() {
         int pixelSize = 7;
         int spacing = 5;
-        
         nelianTexture = NelianInterface.createNelianTexture(this.mc, pixelSize, spacing);
-        
         int totalWidth = 6 * (5 * pixelSize + spacing) - spacing;
         int totalHeight = 5 * pixelSize;
         nelianTextureWidth = totalWidth;
@@ -263,6 +283,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         );
     }
 
+
     private void drawSnowflakes() {
         NelianInterface.drawSnowflakes(snowflakes, this.height);
     }
@@ -281,6 +302,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             lastMouseY = mouseY;
         }
 
+        Nelianinfo.CheckBeta();
+
         GlStateManager.disableAlpha();
         this.renderSkybox(mouseX, mouseY, partialTicks);
         GlStateManager.enableAlpha();
@@ -294,23 +317,24 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         this.drawSnowflakes();
         this.drawMouseTrail();
 
-        int buttonWidth = 240;
-        int buttonHeight = 28;
-        int spacing = 7;
-        int totalHeight = (buttonHeight * 4) + (spacing * 3);
-        int startX = (this.width - buttonWidth) / 2;
-        int startY = (this.height - totalHeight) / 2 + 35;
-
+        int bWidth = 140;
+        int bHeight = 26;
+        int spacing = 8;
+        int startX = this.width / 2 - bWidth - (spacing / 2);
+        int startY = this.height / 2 - 20;
+        int totalHeight = (bHeight + spacing) * 3 + bHeight;
         int panelLeft   = startX - 25;
-        int panelRight  = startX + buttonWidth + 25;
+        int panelRight  = startX + (bWidth * 2) + spacing + 25;
         int panelTop    = startY - 25;
         int panelBottom = startY + totalHeight + 25;
         int panelColor  = new Color(10, 10, 12, 160).getRGB();
-
+        
+        GlStateManager.disableCull();
+        
         NelianInterface.drawRoundedRect(panelLeft, panelTop, panelRight, panelBottom, 14, panelColor);
-
         int outlineColor = new Color(63, 63, 70, 90).getRGB();
         NelianInterface.drawRoundedRectBorder(panelLeft, panelTop, panelRight, panelBottom, 14, outlineColor, 1.5f);
+        
 
         if (accountPanel != null) {
             accountPanel.draw(mc, mouseX, mouseY);
@@ -318,44 +342,48 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
         this.drawNelianTitle();
 
-        int infoPre2 = 0xFFFF5555;
-        int infoPre   = 0x44AA0000;
         int infoColor = 0x44FFFFFF;
+        int infoPre   = 0x44AA0000;
 
-        if (Reflector.FMLCommonHandler_getBrandings.exists()) {
-            Object fml = Reflector.call(Reflector.FMLCommonHandler_instance);
-            List<String> brands = Lists.reverse((List) Reflector.call(fml, Reflector.FMLCommonHandler_getBrandings, true));
-            for (int i = 0; i < brands.size(); i++) {
-                String br = brands.get(i);
-                if (!Strings.isNullOrEmpty(br)) {
-                    this.drawString(this.fontRendererObj, br, 8,
-                            this.height - 12 - i * (this.fontRendererObj.FONT_HEIGHT + 2), infoColor);
-                }
-            }
-            if (Reflector.ForgeHooksClient_renderMainMenu.exists()) {
-                Reflector.call(Reflector.ForgeHooksClient_renderMainMenu, this, this.fontRendererObj, this.width, this.height);
-            }
-        } else {
-            if (Nelianinfo.isPre) {
-                this.drawString(this.fontRendererObj,
-                        "Pre-release " + Nelianinfo.ALL + " " + Nelianinfo.VERSION_NUMBER + " & " + Nelianinfo.BUILD_NUMBER,
-                        8, this.height - 12, infoPre2);
-            } else {
-                this.drawString(this.fontRendererObj, Nelianinfo.VERSION, 8, this.height - 12, infoColor);
-            }
-        }
+        int rightX = this.width - 10;
+        int bottomY = this.height - 10;
+        int lineHeight = this.fontRendererObj.FONT_HEIGHT + 2;
 
-        String copyright;
+        int grayColor = 0xFFA0AAB2;
+
+        String nelianVer = Nelianinfo.crtRENDER;
+        int nelianY = bottomY - lineHeight * 4 + 7;
+        this.drawString(this.fontRendererObj, nelianVer,
+                rightX - this.fontRendererObj.getStringWidth(nelianVer),
+                nelianY, grayColor);
+
+        String mcVer = "Minecraft 1.8.9";
+        int mcY = bottomY - lineHeight * 3 + 7;
+        this.drawString(this.fontRendererObj, mcVer,
+                rightX - this.fontRendererObj.getStringWidth(mcVer),
+                mcY, grayColor);
+
+        String javaVer = "Java " + System.getProperty("java.version");
+        int javaY = bottomY - lineHeight * 2 + 7;
+        this.drawString(this.fontRendererObj, javaVer,
+                rightX - this.fontRendererObj.getStringWidth(javaVer),
+                javaY, grayColor);
+
+        String copyright = "Has nothing to do with Mojang!";
+        int copyrightY = bottomY - lineHeight * 1;
+        this.drawString(this.fontRendererObj, copyright,
+                rightX - this.fontRendererObj.getStringWidth(copyright),
+                this.height - 12, 0xFFFFFFFF);
+
+        int infoPre2 = 0xFFFF5555;
         if (Nelianinfo.isPre) {
-            copyright = "Restricted Source.";
-            this.drawString(this.fontRendererObj, copyright,
-                    this.width - this.fontRendererObj.getStringWidth(copyright) - 8,
-                    this.height - 12, infoPre);
-        } else {
-            copyright = "Has nothing to do with Mojang!";
-            this.drawString(this.fontRendererObj, copyright,
-                    this.width - this.fontRendererObj.getStringWidth(copyright) - 8,
-                    this.height - 12, infoColor);
+            String preLine = "Pre-release " + Nelianinfo.ALL;
+            this.drawString(this.fontRendererObj, preLine,
+                    8, this.height - 12, infoPre2);
+        } else if (Nelianinfo.isBeta) {
+            String betaLine = "BETA " + Nelianinfo.ALL;
+            this.drawString(this.fontRendererObj, betaLine,
+                    8, this.height - 12, infoPre2);
         }
 
         if (this.openGLWarning1 != null && !this.openGLWarning1.isEmpty()) {
