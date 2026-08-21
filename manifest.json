@@ -1,9 +1,9 @@
 {
-  "version": "7.7.9",
+  "version": "7.4.5",
   "files": [
     {
       "path": "Accessibility.dll",
-      "sha1": "cf9c0085976d65f4294b89d1efd6d74689366bb1"
+      "sha1": "cf9c0085976d65f4294b89d1efd6d74689366bb0"
     },
     {
       "path": "CmlLib.Core.Auth.Microsoft.dll",
@@ -55,7 +55,7 @@
     },
     {
       "path": "Nelian.dll",
-      "sha1": "3541bd50f4b2e896fbc5c764da9820fd5268e262"
+      "sha1": "056194a05e9143740924f0ef6a88ad2801778739"
     },
     {
       "path": "Nelian.dll.config",
@@ -67,7 +67,7 @@
     },
     {
       "path": "Nelian.pdb",
-      "sha1": "d356ca48ca48cf8d85d0336aa275e377190430ad"
+      "sha1": "67578933341f013ac8eea52de13fc72236af3592"
     },
     {
       "path": "Nelian.runtimeconfig.json",
