@@ -25,8 +25,6 @@ Following the first official release of Nelian Client, the classes in this repos
 The launcher component of this project relies primarily on the [Cmllib](https://github.com/CmlLib) project.
 
 Added Microsoft accounts, usernames, and UUID information are never sent to or stored on any external server, aside from Microsoft's own servers. Both offline and online account data are stored locally on your device.
-## Security & Ban System
-
 To maintain transparency, the custom source code developed specifically for Nelian is published publicly on GitHub in a read-only form for educational purposes. However, proprietary Nelian security systems, third-party libraries (including CmlLib), and any Minecraft source code are **not** included in this repository.
 
 
