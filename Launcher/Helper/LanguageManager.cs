@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
-
 namespace Nelian
 {
     public static class LanguageManager
     {
         private static string _currentLanguage = "en";
         public static string CurrentLanguage => _currentLanguage;
-
         private static string LanguageFilePath => Path.Combine(
             System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData),
             "Microsoft",
@@ -15,12 +13,10 @@ namespace Nelian
             "Nelian",
             "index.language"
         );
-
         static LanguageManager()
         {
             LoadLanguage();
         }
-
         private static void LoadLanguage()
         {
             try
@@ -38,14 +34,11 @@ namespace Nelian
             catch { }
             _currentLanguage = "en";
         }
-
         public static void SetLanguage(string lang)
         {
             if (lang != "tr" && lang != "en")
                 lang = "en";
-
             _currentLanguage = lang;
-
             try
             {
                 string dir = Path.GetDirectoryName(LanguageFilePath);
@@ -55,10 +48,8 @@ namespace Nelian
             }
             catch { }
         }
-
         private static readonly Dictionary<string, string> TR = new()
         {
-            // Splash
             ["Splash.CheckingUpdates"] = "Güncellemeler kontrol ediliyor...",
             ["Splash.InstallingUpdates"] = "Güncellemeler yükleniyor...",
             ["Splash.PleaseWait"] = "Lütfen bekleyin...",
@@ -82,17 +73,15 @@ namespace Nelian
             ["Splash.CheckingFiles"] = "Dosyalar kontrol ediliyor...",
             ["Splash.Starting"] = "Başlatılıyor...",
             ["Splash.Extracting"] = "Çıkarılıyor...",
-            ["Splash.UpdaterNotFound"] = "Güncelleme Dosyaları Bulunamadı, Lutfen tekrar Kurun",
-
-            // Main
+            ["Splash.UpdaterNotFound"] = "Güncelleme dosyaları bulunamadı, lütfen tekrar kurun.",
             ["Main.Accounts"] = "Hesaplar",
             ["Main.Launch"] = "Oyunu Başlat",
             ["Main.NoSession"] = "Geçerli oturum bulunamadı!",
             ["Main.ErrorTitle"] = "Nelian Hatası",
-            ["Main.RuntimeNotFound"] = "Nelian Kütüphane dosyaları bulunamadı! Devam etmek için lütfen başlatıcıyı yeniden başlatın.",
+            ["Main.RuntimeNotFound"] = "Nelian kütüphane dosyaları bulunamadı! Devam etmek için lütfen başlatıcıyı yeniden başlatın.",
             ["Main.CorruptedFile"] = "Bu Nelian sürümü resmi olmayabilir!\n\nGüvenlik nedeniyle başlatma sonlandırıldı.\nDosya bozulmuş veya değiştirilmiş.\nLütfen doğru sürümü indirmek için başlatıcıyı yeniden başlatın.\n\nHata: 2043",
             ["Main.PrepareFailed"] = "Nelian hazırlanırken hata oluştu: {0}",
-            ["Main.NetworkError"] = "Nelian Ağına bağlanılamıyor: {0}",
+            ["Main.NetworkError"] = "Nelian ağına bağlanılamıyor: {0}",
             ["Main.CrashMessage"] = "Minecraft beklenmedik şekilde kapandı.\n\nSebep:\n{0}\n\nÇıkış Kodu: {1}",
             ["Main.SettingsSaveError"] = "Ayarlar kaydedilemedi. Lütfen klasör izinlerini kontrol edin.",
             ["Main.SettingsSaveErrorDetail"] = "Ayarlar kaydedilirken hata: {0}",
@@ -100,8 +89,8 @@ namespace Nelian
             ["Main.PlayTime"] = "Oynama Süresi: {0}",
             ["Main.LaunchingVanilla"] = "{0} başlatılıyor...",
             ["Main.ReadyVanilla"] = "{0} başlatılmaya hazır",
-            ["Main.ReadyNelian"] = "Nelian başlatılmaya hazır",
-            ["Main.VerifyingAssets"] = "Varlıklar doğrulanıyor..",
+            ["Main.ReadyNelian"] = "Başlatılmaya hazır",
+            ["Main.VerifyingAssets"] = "Varlıklar doğrulanıyor...",
             ["Main.PreparingFiles"] = "Dosyalar hazırlanıyor...",
             ["Main.VerifyingFiles"] = "Dosyalar doğrulanıyor...",
             ["Main.UpdateRequired"] = "Güncelleme gerekli!",
@@ -110,16 +99,33 @@ namespace Nelian
             ["Main.VersionTypeTitle"] = "Sürüm",
             ["Main.VersionTypeDesc"] = "Başlatılacak sürümü seçin",
             ["Main.SelectVersion"] = "Sürüm Seçin:",
-            ["Main.BanText"] = "Kısıtlandınız..",
-
-            // Axion
-            ["Axion.Security"] = "Güvenlik",
-            ["Axion.ActivityDetected"] = "Güvenlik ihlali tespit edildi, giriş engellendi.",
-            ["Axion.ActivityDesc"] = "Cihazınızda şüpheli aktivite tespit edildi, lütfen Başlatıcınızı tekrar başlatın.",
-            ["Axion.VerifyIdentity"] = "Kimliği Doğrula",
-            ["Axion.IdentityVerified"] = "Kimlik Doğrulandı",
-
-            // Settings Panel
+            ["Main.BanText"] = "Kısıtlandınız...",
+            ["Main.SaveButton"] = "Kaydet ve Uygula",
+            ["Main.SettingsSaved"] = "✓ Kaydedildi",
+            ["Main.SettingsSubtitle"] = "Nelian'u ihtiyaçlarına göre uyarla",
+            ["Main.UpdateChecking"] = "Güncellemeler kontrol ediliyor...",
+            ["Main.UpdateApplying"] = "Güncelleme uygulanıyor...",
+            ["Main.UpdateAvailable"] = "Güncelleme mevcut! Yüklemek için tıklayın.",
+            ["Main.UpdateNoUpdate"] = "En son sürüm kullanılıyor.",
+            ["Main.UpdateCheckError"] = "Güncelleme kontrolü başarısız: {0}",
+            ["Main.UpdateAvailableLauncher"] = "Launcher güncellemesi mevcut!",
+            ["Main.UpdateAvailableClient"] = "Client güncellemesi mevcut!",
+            ["Main.OutDate"] = "Eski bir Nelian sürümü kullanıyorsunuz.",
+            ["Main.ClickToInstall"] = "Güncellemek için güncelleme simgesine tıklayın.",
+            ["Category.General"] = "Genel",
+            ["Category.Appearance"] = "Görünüm",
+            ["Category.Advanced"] = "Gelişmiş",
+            ["Section.Game"] = "OYUN",
+            ["Section.Server"] = "SUNUCU",
+            ["Section.Behavior"] = "BAŞLANGIÇ DAVRANIŞI",
+            ["Section.Theme"] = "TEMA",
+            ["Section.Effects"] = "EFEKTLER",
+            ["Section.Integrations"] = "ENTEGRASYONLAR",
+            ["Nelian.Security"] = "Güvenlik",
+            ["Nelian.ActivityDetected"] = "Güvenlik ihlali tespit edildi, giriş engellendi.",
+            ["Nelian.ActivityDesc"] = "Cihazınızda şüpheli aktivite tespit edildi, lütfen başlatıcınızı tekrar başlatın.",
+            ["Nelian.VerifyIdentity"] = "Kimliği Doğrula",
+            ["Nelian.IdentityVerified"] = "Kimlik Doğrulandı",
             ["Main.SettingsTitle"] = "Ayarlar",
             ["Main.MemoryAllocation"] = "Bellek Tahsisi",
             ["Main.MemoryDesc"] = "Minecraft için ayrılacak RAM miktarını belirleyin",
@@ -156,37 +162,93 @@ namespace Nelian
             ["Main.Bannedperm"] = "Hesabınız kalıcı olarak yasaklanmıştır.",
             ["Main.SuspendedUntil"] = "{0} tarihine kadar yasaklandınız.",
             ["Main.SuspendedPermanent"] = "Kalıcı olarak yasaklandınız.",
-            ["Main.WaitAMin"] = "Başlatıcı bütünlüğü kontrol ediliyor..",
-            // AccountManager
+            ["Main.WaitAMin"] = "Başlatıcı bütünlüğü kontrol ediliyor...",
+            ["Main.NelianGuard"] = "NelianGuard şüpheli bir dosya algıladı.",
             ["AccountManager.NoAccounts"] = "Hesap bulunamadı. 'Hesap Ekle' butonuna tıklayarak hesap ekleyin.",
-            ["AccountManager.GettingReady"] = "Giriş Yapılıyor...",
+            ["AccountManager.GettingReady"] = "Giriş yapılıyor...",
             ["AccountManager.PleaseWait"] = "Lütfen Bekleyin",
             ["AccountManager.AddAccount"] = "Hesap Ekle",
             ["AccountManager.LoginFailed"] = "Giriş başarısız: {0}",
             ["AccountManager.RemoveFailed"] = "Silme başarısız: {0}",
             ["AccountManager.RefreshError"] = "Yenileme hatası: {0}",
-            ["AccountManager.OfflineTitle"] = "Bir Kullanıcı adı seçiniz!",
+            ["AccountManager.OfflineTitle"] = "Bir kullanıcı adı seçiniz!",
             ["AccountManager.OfflineMode"] = "Çevrimdışı",
             ["AccountManager.OfflineSave"] = "Kaydet",
             ["AccountManager.UsernameEmpty"] = "Kullanıcı adı boş olamaz.",
             ["AccountManager.UsernameShort"] = "Kullanıcı adı en az 3 karakter uzunluğunda olmalıdır.",
             ["AccountManager.UsernameSpaces"] = "Kullanıcı adı boşluk içeremez.",
             ["AccountManager.KeyFileError"] = "Anahtar dosyası hatası: {0}",
-            ["AccountManager.UsernameInvalid"] = "Kullanıcı Adı geçersiz karakterler içeriyor.",
+            ["AccountManager.UsernameInvalid"] = "Kullanıcı adı geçersiz karakterler içeriyor.",
             ["AccountManager.Microsoft"] = "Microsoft",
-            ["AccountManager.SelectAccountType"] = "Lütfen Hesap türünü seçin",
+            ["AccountManager.SelectAccountType"] = "Lütfen hesap türünü seçin",
             ["AccountManager.Username"] = "Kullanıcı Adı",
             ["AccountManager.CannotBeOfflineAsDeveloper"] = "Bir geliştiricinin ismini kullanamazsınız!",
             ["AccountManager.UsernameLong"] = "Kullanıcı adı 16 karakterden uzun olamaz.",
-
-            // AccountControl
             ["AccountControl.Login"] = "Giriş Yap",
             ["AccountControl.Remove"] = "Sil",
+            ["Modrinth.Instances"] = "Instance'lar",
+            ["Modrinth.StartingProcess"] = "İşlem başlatılıyor...",
+            ["Modrinth.PackFilter"] = "Modrinth Pack (.mrpack)|*.mrpack",
+            ["Modrinth.SelectPack"] = "Modrinth Pack Seç",
+            ["Modrinth.ReadingPack"] = "Paket okunuyor...",
+            ["Modrinth.ScanningFile"] = "Dosya taranıyor",
+            ["Modrinth.Complete"] = "Tamamlandı!",
+            ["Modrinth.InstanceCreated"] = "Instance başarıyla oluşturuldu",
+            ["Modrinth.Error"] = "Hata!",
+            ["Modrinth.ErrorTitle"] = "Hata",
+            ["Modrinth.ErrorMessage"] = "Hata: {0}",
+            ["Modrinth.NoInstances"] = "Henüz instance yok.\n\nSağ üstteki + butonuna tıklayarak\nbir .mrpack dosyası import edin.",
+            ["Modrinth.Fabric"] = "Fabric",
+            ["Modrinth.Forge"] = "Forge",
+            ["Modrinth.Quilt"] = "Quilt",
+            ["Modrinth.VersionFormat"] = "{0}  -  {1} {2}",
+            ["Modrinth.Play"] = "Oynat",
+            ["Modrinth.Preparing"] = "Hazırlanıyor...",
+            ["Modrinth.PreparingInstance"] = "{0} hazırlanıyor...",
+            ["Modrinth.ScanningFiles"] = "Oyun dosyaları taranıyor...",
+            ["Modrinth.ReadyVersion"] = "Sürüm hazır: {0}",
+            ["Modrinth.UsingExisting"] = "Önceden kurulmuş sürüm kullanılıyor",
+            ["Modrinth.InstallingForge"] = "Forge kuruluyor...",
+            ["Modrinth.ForgeVersion"] = "Forge {0} hazırlanıyor...",
+            ["Modrinth.ForgeInstalled"] = "Forge {0} kuruldu",
+            ["Modrinth.ForgeReady"] = "Forge hazır",
+            ["Modrinth.InstallingNeoForge"] = "NeoForge kuruluyor...",
+            ["Modrinth.NeoForgeVersion"] = "NeoForge {0} hazırlanıyor...",
+            ["Modrinth.NeoForgeInstalled"] = "NeoForge {0} kuruldu",
+            ["Modrinth.NeoForgeReady"] = "NeoForge hazır",
+            ["Modrinth.InstallingFabric"] = "Fabric hazırlanıyor...",
+            ["Modrinth.FabricVersion"] = "Fabric {0} hazırlanıyor...",
+            ["Modrinth.FabricInstalled"] = "Fabric {0} hazır",
+            ["Modrinth.FabricReady"] = "Fabric hazır",
+            ["Modrinth.UsingVanilla"] = "Vanilla {0} kullanılıyor",
+            ["Modrinth.VanillaVersion"] = "Vanilla sürümü",
+            ["Modrinth.NoSessionFound"] = "Oturum bulunamadı! Lütfen önce giriş yapın.",
+            ["Modrinth.StartingInstance"] = "{0} başlatılıyor...",
+            ["Modrinth.StartingVersion"] = "Sürüm: {0}",
+            ["Modrinth.UnknownError"] = "Bilinmeyen hata",
+            ["Modrinth.Crashed"] = "Oyun çöktü!",
+            ["Modrinth.CrashMessage"] = "Oyun çöktü!\n\nHata:\n{0}\n\nÇıkış Kodu: {1}",
+            ["Modrinth.CrashDetected"] = "Çökme Algılandı",
+            ["Modrinth.Closed"] = "Kapatıldı",
+            ["Modrinth.InstanceRunning"] = "{0} çalışıyor!",
+            ["Modrinth.WaitingForWindow"] = "Oyun penceresi bekleniyor...",
+            ["Modrinth.Running"] = "Çalışıyor",
+            ["Modrinth.LaunchError"] = "Başlatma Hatası:\n{0}",
+            ["Modrinth.DeleteConfirm"] = "'{0}' silinsin mi?\n\nBu işlem geri alınamaz!",
+            ["Modrinth.DeleteTitle"] = "Instance Sil",
+            ["Modrinth.Content"] = "İçerik",
+            ["Modrinth.OpenFolder"] = "Klasörü Aç",
+            ["Modrinth.Delete"] = "Sil",
+            ["Modrinth.LoadingContent"] = "Yükleniyor...",
+            ["Modrinth.NoContentFiles"] = "Bu klasörde dosya bulunamadı",
+            ["Modrinth.TabMods"] = "Modlar",
+            ["Modrinth.TabResourcepacks"] = "Kaynak Paketleri",
+            ["Modrinth.TabShaders"] = "Shaderlar",
+            ["Modrinth.ToggleError"] = "Dosya durumu değiştirilemedi: {0}",
+            ["Modrinth.InstancesSubtitle"] = ""
         };
-
         private static readonly Dictionary<string, string> EN = new()
         {
-            // Splash
             ["Splash.CheckingUpdates"] = "Checking for updates...",
             ["Splash.InstallingUpdates"] = "Installing updates...",
             ["Splash.PleaseWait"] = "Please wait...",
@@ -210,14 +272,13 @@ namespace Nelian
             ["Splash.CheckingFiles"] = "Checking files...",
             ["Splash.Starting"] = "Starting...",
             ["Splash.Extracting"] = "Extracting...",
-
-            // Main
+            ["Splash.UpdaterNotFound"] = "Update files not found, please reinstall.",
             ["Main.Accounts"] = "Accounts",
             ["Main.Launch"] = "Launch",
             ["Main.NoSession"] = "No current Session Found!",
             ["Main.ErrorTitle"] = "Nelian Error",
             ["Main.RuntimeNotFound"] = "Runtime not found! Please restart your Launcher to continue.",
-            ["Main.CorruptedFile"] = "This version of Nelian might not be official!\n\nFor security reasons, your launch has been terminated.\nThe file has been corrupted or modified.\nPlease restart the launcher to download the correct version.\n\nError: 2043",
+            ["Main.CorruptedFile"] = "This version of Nelian might not be official!\n\nFor security reasons, your launch has been terminated.\nThe file has been corrupted or modified.\nPlease click to the Update button to download the correct version.\n\nError: 2043",
             ["Main.PrepareFailed"] = "Failed to prepare Nelian: {0}",
             ["Main.NetworkError"] = "Cannot connect to Nelian Network: {0}",
             ["Main.CrashMessage"] = "Minecraft exited unexpectedly.\n\nReason:\n{0}\n\nExit Code: {1}",
@@ -227,8 +288,8 @@ namespace Nelian
             ["Main.PlayTime"] = "Play Time: {0}",
             ["Main.LaunchingVanilla"] = "Launching {0}...",
             ["Main.ReadyVanilla"] = "Ready to Launch {0}",
-            ["Main.ReadyNelian"] = "Ready to Launch Nelian",
-            ["Main.VerifyingAssets"] = "Verifying Assets..",
+            ["Main.ReadyNelian"] = "Ready to Launch",
+            ["Main.VerifyingAssets"] = "Verifying Assets...",
             ["Main.PreparingFiles"] = "Preparing files...",
             ["Main.VerifyingFiles"] = "Verifying files...",
             ["Main.UpdateRequired"] = "Update required!",
@@ -237,16 +298,34 @@ namespace Nelian
             ["Main.VersionTypeTitle"] = "Version",
             ["Main.VersionTypeDesc"] = "Select version to launch",
             ["Main.SelectVersion"] = "Select Version:",
-            ["Main.BanText"] = "Restricted..",
-
-            // Axion
-            ["Axion.Security"] = "Security",
-            ["Axion.ActivityDetected"] = "Security violation detected, access denied.",
-            ["Axion.ActivityDesc"] = "We have detected suspicious activity on your device. Restart your Launcher to continue.",
-            ["Axion.VerifyIdentity"] = "Verify Identity",
-            ["Axion.IdentityVerified"] = "Identity Verified",
-
-            // Settings Panel
+            ["Main.BanText"] = "Restricted...",
+            ["Main.SaveButton"] = "Save and Apply",
+            ["Main.SettingsSaved"] = "✓ Saved",
+            ["Main.SettingsSubtitle"] = "Customize Nelian to your needs",
+            ["Main.NelianGuard"] = "NelianGuard detected an unknown file.",
+            ["Main.UpdateChecking"] = "Checking for updates...",
+            ["Main.UpdateApplying"] = "Applying update...",
+            ["Main.UpdateAvailable"] = "Update available! Click to install.",
+            ["Main.UpdateNoUpdate"] = "Latest version",
+            ["Main.UpdateCheckError"] = "Update check failed: {0}",
+            ["Main.UpdateAvailableLauncher"] = "Launcher update available!",
+            ["Main.UpdateAvailableClient"] = "Client update available!",
+            ["Main.OutDate"] = "You're running an outdated version of Nelian.",
+            ["Main.ClickToInstall"] = "Click the Update icon or restart your Launcher to install updates.",
+            ["Category.General"] = "General",
+            ["Category.Appearance"] = "Appearance",
+            ["Category.Advanced"] = "Advanced",
+            ["Section.Game"] = "GAME",
+            ["Section.Server"] = "SERVER",
+            ["Section.Behavior"] = "LAUNCH BEHAVIOR",
+            ["Section.Theme"] = "THEME",
+            ["Section.Effects"] = "EFFECTS",
+            ["Section.Integrations"] = "INTEGRATIONS",
+            ["Nelian.Security"] = "Security",
+            ["Nelian.ActivityDetected"] = "Security violation detected, access denied.",
+            ["Nelian.ActivityDesc"] = "We have detected suspicious activity on your device. Restart your Launcher to continue.",
+            ["Nelian.VerifyIdentity"] = "Verify Identity",
+            ["Nelian.IdentityVerified"] = "Identity Verified",
             ["Main.SettingsTitle"] = "Settings",
             ["Main.MemoryAllocation"] = "Memory Allocation",
             ["Main.MemoryDesc"] = "Set the amount of RAM to allocate for Minecraft",
@@ -283,8 +362,7 @@ namespace Nelian
             ["Main.BanReason"] = "Ban Reason: {0}",
             ["Main.SuspendedUntil"] = "You've been suspended until {0}.",
             ["Main.SuspendedPermanent"] = "You've been suspended permanently.",
-            ["Main.WaitAMin"] = "Fetching Launcher Data..",
-            // AccountManager
+            ["Main.WaitAMin"] = "Fetching Launcher Data...",
             ["AccountManager.NoAccounts"] = "No accounts found. Click 'Add Account' to add one.",
             ["AccountManager.GettingReady"] = "Getting things ready...",
             ["AccountManager.PleaseWait"] = "Please Wait",
@@ -305,22 +383,76 @@ namespace Nelian
             ["AccountManager.UsernameLong"] = "Username cannot be longer than 16 chars.",
             ["AccountManager.Username"] = "Username",
             ["AccountManager.CannotBeOfflineAsDeveloper"] = "You cannot use a Developers In game Nickname!",
-
-            // AccountControl
             ["AccountControl.Login"] = "Login",
             ["AccountControl.Remove"] = "Remove",
+            ["Modrinth.Instances"] = "Instances",
+            ["Modrinth.StartingProcess"] = "Starting process...",
+            ["Modrinth.PackFilter"] = "Modrinth Pack (.mrpack)|*.mrpack",
+            ["Modrinth.SelectPack"] = "Select Modrinth Pack",
+            ["Modrinth.ReadingPack"] = "Reading pack...",
+            ["Modrinth.ScanningFile"] = "Scanning file",
+            ["Modrinth.Complete"] = "Complete!",
+            ["Modrinth.InstanceCreated"] = "Instance successfully created",
+            ["Modrinth.Error"] = "Error!",
+            ["Modrinth.ErrorTitle"] = "Error",
+            ["Modrinth.ErrorMessage"] = "Error: {0}",
+            ["Modrinth.NoInstances"] = "No instances yet.\n\nClick the + button at the top right\nto import a .mrpack file.",
+            ["Modrinth.Fabric"] = "Fabric",
+            ["Modrinth.Forge"] = "Forge",
+            ["Modrinth.Quilt"] = "Quilt",
+            ["Modrinth.VersionFormat"] = "{0}  -  {1} {2}",
+            ["Modrinth.Play"] = "Play",
+            ["Modrinth.Preparing"] = "Preparing...",
+            ["Modrinth.PreparingInstance"] = "Preparing {0}...",
+            ["Modrinth.ScanningFiles"] = "Scanning game files...",
+            ["Modrinth.ReadyVersion"] = "Version ready: {0}",
+            ["Modrinth.UsingExisting"] = "Using previously installed version",
+            ["Modrinth.InstallingForge"] = "Installing Forge...",
+            ["Modrinth.ForgeVersion"] = "Preparing Forge {0}...",
+            ["Modrinth.ForgeInstalled"] = "Forge {0} installed",
+            ["Modrinth.ForgeReady"] = "Forge ready",
+            ["Modrinth.InstallingNeoForge"] = "Installing NeoForge...",
+            ["Modrinth.NeoForgeVersion"] = "Preparing NeoForge {0}...",
+            ["Modrinth.NeoForgeInstalled"] = "NeoForge {0} installed",
+            ["Modrinth.NeoForgeReady"] = "NeoForge ready",
+            ["Modrinth.InstallingFabric"] = "Preparing Fabric...",
+            ["Modrinth.FabricVersion"] = "Preparing Fabric {0}...",
+            ["Modrinth.FabricInstalled"] = "Fabric {0} ready",
+            ["Modrinth.FabricReady"] = "Fabric ready",
+            ["Modrinth.UsingVanilla"] = "Using Vanilla {0}",
+            ["Modrinth.VanillaVersion"] = "Vanilla version",
+            ["Modrinth.NoSessionFound"] = "No session found! Please log in first.",
+            ["Modrinth.StartingInstance"] = "Starting {0}...",
+            ["Modrinth.StartingVersion"] = "Version: {0}",
+            ["Modrinth.UnknownError"] = "Unknown error",
+            ["Modrinth.Crashed"] = "Game crashed!",
+            ["Modrinth.CrashMessage"] = "Game crashed!\n\nError:\n{0}\n\nExit Code: {1}",
+            ["Modrinth.CrashDetected"] = "Crash Detected",
+            ["Modrinth.Closed"] = "Closed",
+            ["Modrinth.InstanceRunning"] = "{0} is running!",
+            ["Modrinth.WaitingForWindow"] = "Waiting for game window...",
+            ["Modrinth.Running"] = "Running",
+            ["Modrinth.LaunchError"] = "Launch Error:\n{0}",
+            ["Modrinth.DeleteConfirm"] = "Delete '{0}'?\n\nThis action cannot be undone!",
+            ["Modrinth.DeleteTitle"] = "Delete Instance",
+            ["Modrinth.Content"] = "Content",
+            ["Modrinth.OpenFolder"] = "Open Folder",
+            ["Modrinth.Delete"] = "Delete",
+            ["Modrinth.LoadingContent"] = "Loading...",
+            ["Modrinth.NoContentFiles"] = "No files found in this folder",
+            ["Modrinth.TabMods"] = "Mods",
+            ["Modrinth.TabResourcepacks"] = "Resource Packs",
+            ["Modrinth.TabShaders"] = "Shaders",
+            ["Modrinth.ToggleError"] = "Could not toggle file state: {0}",
+            ["Modrinth.InstancesSubtitle"] = ""
         };
-
         public static string Get(string key)
         {
             Dictionary<string, string> dictionary = _currentLanguage == "tr" ? TR : EN;
-
             if (dictionary.TryGetValue(key, out string value))
                 return value;
-
             return key;
         }
-
         public static string GetFormatted(string key, params object[] args)
         {
             string template = Get(key);
