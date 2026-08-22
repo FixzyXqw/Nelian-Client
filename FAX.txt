@@ -1,1 +1,3 @@
-CC00DFEA6E5D507E779BD7171ADB25C3F77472F03D1A49C54B219D0A823FB3C7
+old data file
+No longer supported
+FAX:https://raw.githubusercontent.com/FixzyXqw/Nelian-Client/refs/heads/main/FAX.Update
