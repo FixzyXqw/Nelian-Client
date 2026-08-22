@@ -24,6 +24,7 @@ namespace Nelian
             public string DestRelativePath { get; set; }
             public string MinecraftDestRelativePath { get; set; }
             public string JavaDestRelativePath { get; set; }
+            public string ProgramFilesDestRelativePath { get; set; }
             public bool IsZip { get; set; }
         }
 
@@ -31,7 +32,7 @@ namespace Nelian
         {
             new DownloadItem
             {
-                Url = "https://github.com/FixzyXqw/Nelian/releases/download/NelianClientUpdate/Nelian.jar",
+                Url = "https://github.com/FixzyXqw/Nelian-Client/releases/download/NelianClientUpdate/Nelian.jar",
                 TempFileName = "Secure.tmp",
                 DestRelativePath = @"Nelian.runtime",
                 IsZip = false
@@ -45,10 +46,17 @@ namespace Nelian
             },
             new DownloadItem
             {
-                Url = "https://github.com/FixzyXqw/Nelian/releases/download/Assets/jdk-8.0.492.9-hotspot.zip",
+                Url = "https://github.com/FixzyXqw/Nelian-Client/releases/download/Assets/jdk-8.0.492.9-hotspot.zip",
                 TempFileName = "jdk-8.0.492.9-hotspot.tmp",
                 JavaDestRelativePath = @"jdk-8.0.492.9-hotspot",
                 IsZip = true
+            },
+            new DownloadItem
+            {
+                Url = "https://github.com/FixzyXqw/Nelian-Client/releases/download/NelianClientUpdate/NelianGuard.dll",
+                TempFileName = "NelianGuard.tmp",
+                ProgramFilesDestRelativePath = @"NelianGuard.dll",
+                IsZip = false
             }
         };
 
@@ -59,56 +67,95 @@ namespace Nelian
         private string ProgramFilesRoot;
         public event Action LoadingFinished;
 
-        private const string HASH_CHECK_URL = "https://raw.githubusercontent.com/FixzyXqw/Nelian/main/FAX.txt";
         private string expectedHash;
         private bool needsUpdate = false;
 
         private string configFilePath;
 
+        private System.Windows.Forms.Timer _smoothTimer;
+        private float _currentProgress = 0;
+        private float _targetProgress = 0;
+        private const float SMOOTH_SPEED = 0.15f;
+
         public Splash()
         {
-
             InitializeComponent();
 
-
-            guna2ProgressBar1.Minimum = 0;
-            guna2ProgressBar1.Maximum = 100;
-            guna2ProgressBar1.Value = 0;
+            LoadingBar.Minimum = 0;
+            LoadingBar.Maximum = 100;
+            LoadingBar.Value = 0;
+            LoadingBar.Text = "0%";
             label1.Text = LanguageManager.Get("Splash.CheckingUpdates");
+
+            UpdateManager.ProgressChanged += OnUpdateProgressChanged;
+
+            _smoothTimer = new System.Windows.Forms.Timer();
+            _smoothTimer.Interval = 16;
+            _smoothTimer.Tick += SmoothTimer_Tick;
+            _smoothTimer.Start();
         }
+
+        private void SmoothTimer_Tick(object sender, EventArgs e)
+        {
+            if (Math.Abs(_currentProgress - _targetProgress) < 0.5f)
+            {
+                _currentProgress = _targetProgress;
+            }
+            else
+            {
+                _currentProgress += (_targetProgress - _currentProgress) * SMOOTH_SPEED;
+            }
+
+            int displayValue = (int)Math.Round(_currentProgress);
+            displayValue = Math.Max(0, Math.Min(100, displayValue));
+
+            LoadingBar.Value = displayValue;
+            LoadingBar.Text = $"{displayValue}%";
+        }
+
+        private void OnUpdateProgressChanged(int progress)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<int>(OnUpdateProgressChanged), progress);
+                return;
+            }
+
+            _targetProgress = Math.Max(0, Math.Min(100, progress));
+        }
+
         private void CenterControls()
         {
             CenterLabel();
-            guna2ProgressBar1.Left = (this.ClientSize.Width - guna2ProgressBar1.Width) / 2;
+            LoadingBar.Left = (this.ClientSize.Width - LoadingBar.Width) / 2;
             pictureBox1.Left = label1.Left + (label1.Width - pictureBox1.Width) / 2;
             pictureBox1.Top = label1.Top - pictureBox1.Height - 25;
         }
+
         private void CenterPictureBox()
         {
-            BuildInfo.Tuvan("Code Name: MAYBETHATSNICE!");
             pictureBox1.Location = new Point(
                 (ClientSize.Width - pictureBox1.Width) / 2 + 30,
                 (ClientSize.Height - pictureBox1.Height) / 2 - 50
-
             );
         }
+
         private void CenterLabel()
         {
             label1.AutoSize = true;
             label1.PerformLayout();
-
             label1.Left = pictureBox1.Left + (pictureBox1.Width - label1.Width) / 2;
         }
+
         private readonly Color bgBase = Color.FromArgb(14, 14, 14);
         private readonly Color neonBlue = Color.FromArgb(0, 170, 255);
         private readonly Color textTarget = Color.FromArgb(225, 225, 225);
+
         private void Splash_Load(object sender, EventArgs e)
         {
             label1.ForeColor = Color.White;
             CenterPictureBox();
             int scaling = (int)Math.Round(DeviceDpi / 96.0 * 100);
-
-
             StartLoading();
         }
 
@@ -204,79 +251,32 @@ Theme=Newgen");
             {
                 UpdateStatus(LanguageManager.Get("Splash.CheckingUpdates"));
 
-                bool launcherNeedsUpdate = await CheckManifestDifference();
+                bool launcherNeedsUpdate = await UpdateManager.CheckLauncherUpdateAsync();
+                needsUpdate = launcherNeedsUpdate;
 
                 if (launcherNeedsUpdate)
                 {
                     UpdateStatus(LanguageManager.Get("Splash.InstallingUpdates"));
-
-                    string updaterPath = Path.Combine(
-                        ProgramFilesRoot,
-                        "Updater.exe");
-
-                    if (File.Exists(updaterPath))
-                    {
-                        Process.Start(new ProcessStartInfo
-                        {
-                            FileName = updaterPath,
-                            UseShellExecute = true,
-                            Verb = "runas"
-                        });
-
-                        Application.Exit();
-                        return;
-                    }
-
-                    throw new FileNotFoundException(
-                        "Updater.exe not found.",
-                        updaterPath);
+                    UpdateManager.ApplyLauncherUpdate();
+                    return;
                 }
 
                 UpdateStatus(LanguageManager.Get("Splash.CheckingUpdates"));
 
-                bool clientNeedsUpdate = await CheckClientUpdate();
+                bool clientNeedsUpdate = await UpdateManager.CheckClientUpdateAsync();
+                expectedHash = UpdateManager.ExpectedHash;
 
                 if (clientNeedsUpdate)
                 {
                     UpdateStatus(LanguageManager.Get("Splash.InstallingUpdates"));
-
-                    var clientItem = downloads.First(x =>
-                        !string.IsNullOrEmpty(x.DestRelativePath) &&
-                        x.DestRelativePath.Equals(
-                            "Nelian.runtime",
-                            StringComparison.OrdinalIgnoreCase));
-
-                    string tempPath = Path.Combine(
-                        tempFolder,
-                        clientItem.TempFileName);
-
-                    await DownloadFile(
-                        clientItem.Url,
-                        tempPath);
-
-                    string destPath = GetDestinationPath(clientItem);
-
-                    Directory.CreateDirectory(
-                        Path.GetDirectoryName(destPath));
-
-                    if (File.Exists(destPath))
-                        File.Delete(destPath);
-
-                    File.Move(
-                        tempPath,
-                        destPath);
-
-                    await VerifyInstalledHash();
+                    await UpdateManager.ApplyClientUpdateAsync();
                 }
 
                 bool allFilesExist = true;
-
                 foreach (var item in downloads)
                 {
                     string destPath = GetDestinationPath(item);
-
-                    if (!File.Exists(destPath) &&
-                        !IsDirectoryExtracted(item))
+                    if (!File.Exists(destPath) && !IsDirectoryExtracted(item))
                     {
                         allFilesExist = false;
                         break;
@@ -294,189 +294,21 @@ Theme=Newgen");
                     if (Directory.Exists(tempFolder))
                         Directory.Delete(tempFolder, true);
                 }
-                catch
-                {
-                }
+                catch { }
 
                 UpdateStatus(LanguageManager.Get("Splash.PleaseWait"));
-
-                UpdateProgress(100);
-
+                _targetProgress = 100;
                 await Task.Delay(600);
-
                 LoadingFinished?.Invoke();
             }
             catch (Exception ex)
             {
-                UpdateStatus(
-                    string.Format(
-                        LanguageManager.Get("Splash.DownloadError"),
-                        ex.Message));
-
+                UpdateStatus(string.Format(LanguageManager.Get("Splash.DownloadError"), ex.Message));
                 MessageBox.Show(
-                    string.Format(
-                        LanguageManager.Get("Splash.DownloadErrorMessage"),
-                        ex.Message),
+                    string.Format(LanguageManager.Get("Splash.DownloadErrorMessage"), ex.Message),
                     LanguageManager.Get("Splash.Error"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-            }
-        }
-        private async Task<bool> CheckClientUpdate()
-        {
-            try
-            {
-                using HttpClient client = new HttpClient();
-                client.Timeout = TimeSpan.FromSeconds(30);
-
-                string remoteHash = await client.GetStringAsync(HASH_CHECK_URL);
-
-                remoteHash = remoteHash.Trim();
-
-                if (string.IsNullOrWhiteSpace(remoteHash))
-                    throw new Exception("FAX.txt boş.");
-
-                expectedHash = remoteHash;
-
-                string localPath = Path.Combine(
-                    ProgramFilesRoot,
-                    "Nelian.runtime");
-
-                if (!File.Exists(localPath))
-                    return true;
-
-                string localHash = await CalculateFileHashAsync(localPath);
-
-                return !string.Equals(
-                    localHash,
-                    expectedHash,
-                    StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return true;
-            }
-        }
-        private async Task CheckForUpdates()
-        {
-            try
-            {
-                needsUpdate = await CheckManifestDifference();
-
-                if (needsUpdate)
-                    UpdateStatus(LanguageManager.Get("Splash.InstallingUpdates"));
-                else
-                    UpdateStatus(LanguageManager.Get("Splash.AllSet"));
-            }
-            catch (Exception ex)
-            {
-                needsUpdate = true;
-                UpdateStatus(string.Format(LanguageManager.Get("Splash.UpdateCheckFailed"), ex.Message));
-            }
-        }
-
-        private const string MANIFEST_URL = "https://raw.githubusercontent.com/FixzyXqw/Nelian/refs/heads/main/manifest.json";
-
-        private class Manifest
-        {
-            public string version { get; set; }
-            public System.Collections.Generic.List<FileEntry> files { get; set; }
-        }
-
-        private class FileEntry
-        {
-            public string path { get; set; }
-            public string sha1 { get; set; }
-        }
-
-        private async Task<bool> CheckManifestDifference()
-        {
-            try
-            {
-                using HttpClient client = new HttpClient();
-                client.Timeout = TimeSpan.FromSeconds(30);
-
-                string remoteManifestJson = await client.GetStringAsync(MANIFEST_URL);
-                var remoteManifest = JsonSerializer.Deserialize<Manifest>(remoteManifestJson);
-
-                string localManifestPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-                    "Nelian",
-                    "manifest.json");
-
-                if (!File.Exists(localManifestPath))
-                    return true;
-
-                string localManifestJson = await File.ReadAllTextAsync(localManifestPath);
-                var localManifest = JsonSerializer.Deserialize<Manifest>(localManifestJson);
-
-                if (remoteManifest.version != localManifest.version)
-                    return true;
-
-                var remoteFiles = remoteManifest.files
-                    .Where(x => !RuntimeFilter.IsDotNetRuntimeFile(x.path))
-                    .ToDictionary(x => x.path, x => x.sha1);
-
-                var localFiles = localManifest.files
-                    .Where(x => !RuntimeFilter.IsDotNetRuntimeFile(x.path))
-                    .ToDictionary(x => x.path, x => x.sha1);
-
-                if (remoteFiles.Count != localFiles.Count)
-                    return true;
-
-                foreach (var file in remoteFiles)
-                {
-                    if (!localFiles.TryGetValue(file.Key, out string sha1))
-                        return true;
-
-                    if (!string.Equals(file.Value, sha1, StringComparison.OrdinalIgnoreCase))
-                        return true;
-                }
-
-                return false;
-            }
-            catch
-            {
-                return true;
-            }
-        }
-
-        private async Task<string> CalculateFileHashAsync(string filePath)
-        {
-            return await Task.Run(() =>
-            {
-                using (var sha = SHA256.Create())
-                using (var stream = File.OpenRead(filePath))
-                {
-                    byte[] hash = sha.ComputeHash(stream);
-                    return BitConverter.ToString(hash).Replace("-", "");
-                }
-            });
-        }
-
-        private async Task VerifyInstalledHash()
-        {
-            try
-            {
-                string nelianRuntimePath = Path.Combine(ProgramFilesRoot, "Nelian.runtime");
-
-                if (!File.Exists(nelianRuntimePath))
-                {
-                    throw new Exception(LanguageManager.Get("Splash.HashMismatch"));
-                }
-
-                string installedHash = await CalculateFileHashAsync(nelianRuntimePath);
-
-                if (!string.Equals(installedHash, expectedHash, StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new Exception(LanguageManager.Get("Splash.HashVerificationFailed"));
-                }
-
-                UpdateStatus(LanguageManager.Get("Splash.PleaseWait"));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(string.Format(LanguageManager.Get("Splash.HashError"), ex.Message));
             }
         }
 
@@ -486,7 +318,6 @@ Theme=Newgen");
             {
                 var item = downloads[i];
                 string destPath = GetDestinationPath(item);
-
                 bool shouldSkip = false;
 
                 if (!needsUpdate)
@@ -502,16 +333,14 @@ Theme=Newgen");
                 if (shouldSkip || File.Exists(destPath) || IsDirectoryExtracted(item))
                 {
                     int progress = (i + 1) * 100 / downloads.Length;
-                    UpdateProgress(progress);
+                    _targetProgress = progress;
                     continue;
                 }
 
                 string tempPath = Path.Combine(tempFolder, item.TempFileName);
-
                 await DownloadFile(item.Url, tempPath);
-
                 int newProgress = (i + 1) * 100 / downloads.Length;
-                UpdateProgress(newProgress);
+                _targetProgress = newProgress;
             }
         }
 
@@ -520,7 +349,6 @@ Theme=Newgen");
             foreach (var item in downloads)
             {
                 string tempPath = Path.Combine(tempFolder, item.TempFileName);
-
                 if (!File.Exists(tempPath))
                     continue;
 
@@ -538,12 +366,10 @@ Theme=Newgen");
                     if (item.IsZip)
                     {
                         string extractDir = GetExtractPath(item);
-
                         if (!Directory.Exists(extractDir) || Directory.GetFiles(extractDir, "*", SearchOption.AllDirectories).Length == 0)
                         {
                             await ExtractZipAsync(destPath, extractDir);
                         }
-
                         if (File.Exists(destPath))
                             File.Delete(destPath);
                     }
@@ -557,12 +383,12 @@ Theme=Newgen");
 
         private string GetDestinationPath(DownloadItem item)
         {
-            if (!string.IsNullOrEmpty(item.DestRelativePath))
+            if (!string.IsNullOrEmpty(item.ProgramFilesDestRelativePath))
+                return Path.Combine(ProgramFilesRoot, item.ProgramFilesDestRelativePath);
+            else if (!string.IsNullOrEmpty(item.DestRelativePath))
             {
                 if (item.DestRelativePath.Contains("Nelian.runtime"))
-                {
                     return Path.Combine(ProgramFilesRoot, item.DestRelativePath);
-                }
                 return Path.Combine(appDataRoot, item.DestRelativePath);
             }
             else if (!string.IsNullOrEmpty(item.MinecraftDestRelativePath))
@@ -596,12 +422,11 @@ Theme=Newgen");
             using (WebClient client = new WebClient())
             {
                 var tcs = new TaskCompletionSource<bool>();
-
                 client.DownloadProgressChanged += (s, e) =>
                 {
                     BeginInvoke(new Action(() =>
                     {
-                        guna2ProgressBar1.Value = e.ProgressPercentage;
+                        _targetProgress = e.ProgressPercentage;
                     }));
                 };
 
@@ -641,6 +466,9 @@ Theme=Newgen");
                 {
                     using (var archive = ZipFile.OpenRead(zipPath))
                     {
+                        int total = archive.Entries.Count;
+                        int current = 0;
+
                         foreach (var entry in archive.Entries)
                         {
                             if (string.IsNullOrEmpty(entry.Name))
@@ -653,6 +481,13 @@ Theme=Newgen");
                                 Directory.CreateDirectory(fileDir);
 
                             entry.ExtractToFile(filePath, true);
+
+                            current++;
+                            int progress = (current * 100) / total;
+                            BeginInvoke(new Action(() =>
+                            {
+                                _targetProgress = progress;
+                            }));
                         }
                     }
                 });
@@ -668,14 +503,6 @@ Theme=Newgen");
             BeginInvoke(new Action(() =>
             {
                 label1.Text = message;
-            }));
-        }
-
-        private void UpdateProgress(int value)
-        {
-            BeginInvoke(new Action(() =>
-            {
-                guna2ProgressBar1.Value = value;
             }));
         }
 
@@ -724,13 +551,29 @@ Theme=Newgen");
             }
         }
 
+        private void label1_Click(object sender, EventArgs e) { }
+        private void pictureBox1_Click(object sender, EventArgs e) { }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
-            guna2ProgressBar1.Text = label1.Text;
         }
 
+        private void label1_TextChanged(object sender, EventArgs e) { }
 
-        private void guna2ProgressBar1_ValueChanged_1(object sender, EventArgs e)
+
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                UpdateManager.ProgressChanged -= OnUpdateProgressChanged;
+                _smoothTimer?.Stop();
+                _smoothTimer?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void LoadingBar_ValueChanged(object sender, EventArgs e)
         {
             CenterLabel();
         }
