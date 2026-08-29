@@ -1,5 +1,5 @@
 {
-  "version": "7.8",
+  "version": "7.8.1",
   "files": [
     {
       "path": "Accessibility.dll",
@@ -55,7 +55,7 @@
     },
     {
       "path": "Nelian.dll",
-      "sha1": "495753e9294b72deb1b8331d7d2b3fc79581ef18"
+      "sha1": "51401d5607b3a841aed0b562c162d215b9a59f51"
     },
     {
       "path": "Nelian.dll.config",
@@ -63,11 +63,11 @@
     },
     {
       "path": "Nelian.exe",
-      "sha1": "89960759d833857e48208d65e250464fdeb0c1df"
+      "sha1": "284960d59045a1009957d97c377b886bdcca1a7d"
     },
     {
       "path": "Nelian.pdb",
-      "sha1": "cca975fb80eed3f9688b47fc576c83084be34a7a"
+      "sha1": "bf1091d83753b73ffbd0b02a0aea43a3c1c0586a"
     },
     {
       "path": "Nelian.runtimeconfig.json",
@@ -76,106 +76,6 @@
     {
       "path": "netstandard.dll",
       "sha1": "6b1b14f559e4b6a1aae0ed8e9e71c63482cb1a5a"
-    },
-    {
-      "path": "Newtonsoft.Json.dll",
-      "sha1": "e3673d05d46f29e68241d4536bddf18cdd0a913d"
-    },
-    {
-      "path": "SevenZip.dll",
-      "sha1": "204fd914b84630366c3a656254f39a99a884d8d4"
-    },
-    {
-      "path": "WebView2Loader.dll",
-      "sha1": "5ce5ea789dcfd04effc7ec2aa40d704bb42cb31b"
-    },
-    {
-      "path": "XboxAuthNet.dll",
-      "sha1": "09425960b7ff6bb6a38be98070ed845d714debaa"
-    },
-    {
-      "path": "XboxAuthNet.Game.dll",
-      "sha1": "3a7d8471efe21572509c0dbe255cce40f86c4518"
-    }
-  ]
-}{
-  "version": "7.8",
-  "files": [
-    {
-      "path": "Accessibility.dll",
-      "sha1": "cf9c0085976d65f4294b89d1efd6d74689366bb0"
-    },
-    {
-      "path": "CmlLib.Core.Auth.Microsoft.dll",
-      "sha1": "bbd33d074fdb6bbe91f4b2ac126abd1763793b46"
-    },
-    {
-      "path": "CmlLib.Core.Commons.dll",
-      "sha1": "5cbcf976348e0ec25b316782967630fbb0ffea29"
-    },
-    {
-      "path": "CmlLib.Core.dll",
-      "sha1": "f76bd5cc4e4ba6ea9bb7cbddd723b4d3804df2e2"
-    },
-    {
-      "path": "CmlLib.Core.Installer.Forge.dll",
-      "sha1": "d58bb5c4bb3ac77b0281c8a5299511689a61f935"
-    },
-    {
-      "path": "CmlLib.Core.Installer.NeoForge.dll",
-      "sha1": "19d6bb79551f540669be9757f00f48b999b827f6"
-    },
-    {
-      "path": "DirectWriteForwarder.dll",
-      "sha1": "443665e79c22d5b038e51216f846539e16f593b8"
-    },
-    {
-      "path": "DiscordRPC.dll",
-      "sha1": "736f87eda0d7a8b1449d860726531237ad30d070"
-    },
-    {
-      "path": "Guna.UI2.dll",
-      "sha1": "adcecd66dca7dfa22b5c3286b0e1d9a930be3af6"
-    },
-    {
-      "path": "HtmlAgilityPack.dll",
-      "sha1": "dd3219827ecb8928984d20fb915a3d66f2a641f4"
-    },
-    {
-      "path": "ICSharpCode.SharpZipLib.dll",
-      "sha1": "f77f5a3f19f1ea332384517400684e5c2365e14a"
-    },
-    {
-      "path": "mscordaccore_amd64_amd64_8.0.2826.26413.dll",
-      "sha1": "02c596fecf01ac8fb76404f0ff7ca25663f7d3e2"
-    },
-    {
-      "path": "Nelian.deps.json",
-      "sha1": "084453e018f2298721e9e0e9779a4afda6386c65"
-    },
-    {
-      "path": "Nelian.dll",
-      "sha1": "790d052a535f1563f028a64177d332c84b77998f"
-    },
-    {
-      "path": "Nelian.dll.config",
-      "sha1": "6862190bc620ed55aeed46d7f51e1d5d29076822"
-    },
-    {
-      "path": "Nelian.exe",
-      "sha1": "2095dfc23afd0351bd29699c53709adaf2fe4db8"
-    },
-    {
-      "path": "Nelian.pdb",
-      "sha1": "1c4d9689410f01489bea89252f76ab0164d7404e"
-    },
-    {
-      "path": "Nelian.runtimeconfig.json",
-      "sha1": "4a3c93f4fad1945f07699e4f347a0da1f6120b94"
-    },
-    {
-      "path": "netstandard.dll",
-      "sha1": "78c2598df10bc31feee47d770208bcf4e79d02b7"
     },
     {
       "path": "Newtonsoft.Json.dll",
