@@ -25,6 +25,7 @@ You may view, study, and use the source code for noncommercial purposes only, in
 ## Launcher & Privacy
 
 The launcher component of this project relies primarily on the [CmlLib](https://github.com/CmlLib) project.
+
 The launcher component of this project relies primarily on the [Nelian Updater](https://github.com/FixzyXqw/NelianUpdater) project for managing updates.
 
 Microsoft accounts, usernames, and UUID information are never sent to or stored on any external server, aside from Microsoft's own servers. Both offline and online account data are stored locally on your device.
