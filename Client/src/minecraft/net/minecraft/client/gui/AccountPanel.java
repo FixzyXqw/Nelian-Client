@@ -30,28 +30,24 @@ public class AccountPanel {
 
     private static final Logger logger = LogManager.getLogger("AccountPanel");
 
-    // ========== KONUM & BOYUT ==========
     private int x, y;
     private int width  = 210;
     private int height = 64;
 
-    // ========== ANİMASYON ==========
-    private float hover        = 0f;   // 0 to 1
-    private float clickPulse   = 0f;   // 1 to 0
-    private float copyAlpha    = 0f;   // 1 to 0
+    private float hover        = 0f; 
+    private float clickPulse   = 0f; 
+    private float copyAlpha    = 0f; 
     private float ringPhase    = 0f;  
     private boolean copied     = false;
 
-    // ========== GERÇEK SKIN SİSTEMİ ==========
-    // In mainmenu, you cannot get players head because player hasn't joined to a world yet
 
     private volatile ResourceLocation resolvedSkin = null;
     private volatile boolean resolvedIsFlatFace = false; 
     private boolean skinFetchStarted = false;
 
     
-    private static final int C_BG_TOP     = 0xE614192B; // upside gradient
-    private static final int C_BG_BOTTOM  = 0xE60A0D18; // downside gradient
+    private static final int C_BG_TOP     = 0xE614192B;
+    private static final int C_BG_BOTTOM  = 0xE60A0D18; 
     private static final int C_BG_HOVER_T = 0xE61E2A42;
     private static final int C_BG_HOVER_B = 0xE6111827;
 
@@ -80,7 +76,6 @@ public class AccountPanel {
         this.y = y;
     }
 
-    // ========== ANA ÇİZİM METODU ==========
     public void draw(Minecraft mc, int mouseX, int mouseY) {
         Session session = mc.getSession();
 
@@ -361,7 +356,7 @@ public class AccountPanel {
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.shadeModel(7425); // GL_SMOOTH
+        GlStateManager.shadeModel(7425);
 
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer wr = tess.getWorldRenderer();
@@ -388,7 +383,7 @@ public class AccountPanel {
         wr.pos(right - radius, bottom - radius, 0).color(rB, gB, bB, aB).endVertex();
         tess.draw();
 
-        GlStateManager.shadeModel(7424); // GL_FLAT
+        GlStateManager.shadeModel(7424);
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
 
@@ -414,7 +409,7 @@ public class AccountPanel {
 
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer wr = tess.getWorldRenderer();
-        wr.begin(3, DefaultVertexFormats.POSITION); // GL_LINE_STRIP
+        wr.begin(3, DefaultVertexFormats.POSITION);
 
         int segs = 8;
         double[][] corners = {
@@ -454,7 +449,7 @@ public class AccountPanel {
 
         for (int a = 0; a < arcs; a++) {
             float start = phaseDeg + a * gap;
-            wr.begin(5, DefaultVertexFormats.POSITION_COLOR); // GL_TRIANGLE_STRIP
+            wr.begin(5, DefaultVertexFormats.POSITION_COLOR);
             int segs = 10;
             for (int i = 0; i <= segs; i++) {
                 float t = i / (float) segs;
