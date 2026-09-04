@@ -5,10 +5,6 @@ import java.util.List;
 
 /*
  * I SOMETIMES USE GOOGLE TRANSLATE FOR LONG ASS COMMENTS SO MAY INCLUDE PROBLEMS IN IT ALR?
- * I also had some help from ai, but trust me a paid ai would do ten times better thn this
- * And a free ai in the other hand would do ten times worse thn this so dont try to make a physics system 
- * with ai, tell it to modify this :D
- *
  * Days wasted: 4 and a half
  * 
  * 
