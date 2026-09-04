@@ -5,11 +5,14 @@ import java.util.List;
 
 /*
  * I SOMETIMES USE GOOGLE TRANSLATE FOR LONG ASS COMMENTS SO MAY INCLUDE PROBLEMS IN IT ALR?
- * 
+ * I also had some help from ai, but trust me a paid ai would do ten times better thn this
+ * And a free ai in the other hand would do ten times worse thn this so dont try to make a physics system 
+ * with ai, tell it to modify this :D
+ *
  * Days wasted: 4 and a half
  * 
  * 
- * * A simple 2D Verlet-ish (i know :D) rope simulation.
+ * A simple 2D Verlet-ish (i know :D) rope simulation.
  * I studied the general approach used by WaveyCapes StickSimulation,
  * but this was implemented separately and intentionally kept SIMPLE cuz OMFG its hard.
  *
