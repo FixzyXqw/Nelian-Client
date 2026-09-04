@@ -102,12 +102,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             }
         }
     }
-
-
-
-
-
-
     public GuiMainMenu() {
         this.openGLWarning2 = field_96138_a;
         this.field_183502_L = false;
