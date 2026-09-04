@@ -8,7 +8,7 @@ import java.util.List;
  * Days wasted: 4 and a half
  * 
  * Here’s my advice: if you’re on the free ChatGPT plan like I am, don’t try to build a physics system.
- * Even when I tried to get help, it kept breaking my code, and I had to fix it myself every time it happened :D
+ * Even when I tried to get help, it kept breaking my code, and I had to fix it myself every time it happened 
  * 
  * A simple 2D Verlet-ish (i know :D) rope simulation.
  * I studied the general approach used by WaveyCapes StickSimulation,
