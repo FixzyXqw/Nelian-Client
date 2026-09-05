@@ -1,4 +1,4 @@
-package net.minecraft.client.gui;
+package net.minecraft.client.Nelian.GUI;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
